@@ -1,91 +1,134 @@
 /*
- * Converts a (as of now) Hardcoded Codon to an AminoAcid
- * using HashMap method
+ * Hashmap for Codons and associated Amino Acids
+ * 
  * -rmoore
  */
 
 package population.genetics;
 
-import java.util.HashMap;
 
-public class Codon {
-   
-    static String DNACodon = "ATG";
-    static HashMap<String, String> AminoConverter = new HashMap();
-    
-    public static HashMap CodonMap(HashMap<String, String> AminoConverter){
-        AminoConverter.put("AAT", "I");
-        AminoConverter.put("ATC", "I");
-        AminoConverter.put("ATA", "I");
-        AminoConverter.put("CTT", "L");
-        AminoConverter.put("CTC", "L");
-        AminoConverter.put("CTA", "L");
-        AminoConverter.put("CTG", "L");
-        AminoConverter.put("TTA", "L");
-        AminoConverter.put("TTG", "L");
-        AminoConverter.put("GTT", "V");
-        AminoConverter.put("GTC", "V");
-        AminoConverter.put("GTA", "V");
-        AminoConverter.put("GTG", "V");
-        AminoConverter.put("TTT", "F");
-        AminoConverter.put("TTC", "F");
-        AminoConverter.put("ATG", "--START--M");
-        AminoConverter.put("TGT", "C");
-        AminoConverter.put("TGC", "C");
-        AminoConverter.put("GCT", "A");
-        AminoConverter.put("GCC", "A");
-        AminoConverter.put("GCA", "A");
-        AminoConverter.put("GCG", "A");
-        AminoConverter.put("GGT", "G");
-        AminoConverter.put("GGC", "G");
-        AminoConverter.put("GGA", "G");
-        AminoConverter.put("GGG", "G");
-        AminoConverter.put("CCT", "P");
-        AminoConverter.put("CCC", "P");
-        AminoConverter.put("CCA", "P");
-        AminoConverter.put("CCG", "P");
-        AminoConverter.put("ACT", "T");
-        AminoConverter.put("ACC", "T");
-        AminoConverter.put("ACA", "T");
-        AminoConverter.put("ACG", "T");
-        AminoConverter.put("TCT", "S");
-        AminoConverter.put("TCC", "S");
-        AminoConverter.put("TCA", "S");
-        AminoConverter.put("TCG", "S");
-        AminoConverter.put("AGT", "S");
-        AminoConverter.put("AGC", "S");
-        AminoConverter.put("TAT", "Y");
-        AminoConverter.put("TAC", "Y");
-        AminoConverter.put("TGG", "W");
-        AminoConverter.put("CAA", "Q");
-        AminoConverter.put("CAG", "Q");
-        AminoConverter.put("AAT", "N");
-        AminoConverter.put("AAC", "N");
-        AminoConverter.put("CAT", "H");
-        AminoConverter.put("CAC", "H");
-        AminoConverter.put("GAA", "E");
-        AminoConverter.put("GAG", "E");
-        AminoConverter.put("GAT", "D");
-        AminoConverter.put("GAC", "D");
-        AminoConverter.put("AAA", "K");
-        AminoConverter.put("AAG", "K");
-        AminoConverter.put("CGT", "R");
-        AminoConverter.put("CGC", "R");
-        AminoConverter.put("CGA", "R");
-        AminoConverter.put("CGG", "R");
-        AminoConverter.put("AGA", "R");
-        AminoConverter.put("AGG", "R");
-        AminoConverter.put("TAA", "STOP");
-        AminoConverter.put("TAG", "STOP");
-        AminoConverter.put("TGA", "STOP");
-        return AminoConverter;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
+public class Codon{
+    static String bpfile = "C:\\Users\\rmoor_000\\Documents\\NetBeans"
+            + "Projects\\Population Genetics\\src\\population\\genetics\\"
+            + "bpdata.dat";
+     
+    private static final Map<String, String> cMap;
+        static {
+        Map<String, String> CodonMap = new HashMap<>(); 
+        CodonMap.put("AAT", "I");
+        CodonMap.put("ATC", "I");
+        CodonMap.put("ATA", "I");
+        CodonMap.put("CTT", "L");
+        CodonMap.put("CTC", "L");
+        CodonMap.put("CTA", "L");
+        CodonMap.put("CTG", "L");
+        CodonMap.put("TTA", "L");
+        CodonMap.put("TTG", "L");
+        CodonMap.put("GTT", "V");
+        CodonMap.put("GTC", "V");
+        CodonMap.put("GTA", "V");
+        CodonMap.put("GTG", "V");
+        CodonMap.put("TTT", "F");
+        CodonMap.put("TTC", "F");
+        CodonMap.put("ATG", "--START--M");
+        CodonMap.put("TGT", "C");
+        CodonMap.put("TGC", "C");
+        CodonMap.put("GCT", "A");
+        CodonMap.put("GCC", "A");
+        CodonMap.put("GCA", "A");
+        CodonMap.put("GCG", "A");
+        CodonMap.put("GGT", "G");
+        CodonMap.put("GGC", "G");
+        CodonMap.put("GGA", "G");
+        CodonMap.put("GGG", "G");
+        CodonMap.put("CCT", "P");
+        CodonMap.put("CCC", "P");
+        CodonMap.put("CCA", "P");
+        CodonMap.put("CCG", "P");
+        CodonMap.put("ACT", "T");
+        CodonMap.put("ACC", "T");
+        CodonMap.put("ACA", "T");
+        CodonMap.put("ACG", "T");
+        CodonMap.put("TCT", "S");
+        CodonMap.put("TCC", "S");
+        CodonMap.put("TCA", "S");
+        CodonMap.put("TCG", "S");
+        CodonMap.put("AGT", "S");
+        CodonMap.put("AGC", "S");
+        CodonMap.put("TAT", "Y");
+        CodonMap.put("TAC", "Y");
+        CodonMap.put("TGG", "W");
+        CodonMap.put("CAA", "Q");
+        CodonMap.put("CAG", "Q");
+        CodonMap.put("AAT", "N");
+        CodonMap.put("AAC", "N");
+        CodonMap.put("CAT", "H");
+        CodonMap.put("CAC", "H");
+        CodonMap.put("GAA", "E");
+        CodonMap.put("GAG", "E");
+        CodonMap.put("GAT", "D");
+        CodonMap.put("GAC", "D");
+        CodonMap.put("AAA", "K");
+        CodonMap.put("AAG", "K");
+        CodonMap.put("CGT", "R");
+        CodonMap.put("CGC", "R");
+        CodonMap.put("CGA", "R");
+        CodonMap.put("CGG", "R");
+        CodonMap.put("AGA", "R");
+        CodonMap.put("AGG", "R");
+        CodonMap.put("TAA", "STOP");
+        CodonMap.put("TAG", "STOP");
+        CodonMap.put("TGA", "STOP");
+        cMap = Collections.unmodifiableMap(CodonMap);
     }
     
-    public static void main(String[] args){
-        HashMap CodonMap;
-        CodonMap = Codon.CodonMap(AminoConverter);
-  
-    System.out.println(CodonMap.get(DNACodon));
+    public static String fileTranslator(String newfile) throws IOException {
+        try {
+        BufferedReader bpInput = new BufferedReader(new FileReader(newfile));
+        String line;
+        StringBuilder bpStringBuilder = new StringBuilder();
+        String ls = System.getProperty("line.separator");
+        
+        //Code taken from unknown user at stackoverflow.com
+        while((line = bpInput.readLine())!= null){
+            bpStringBuilder.append(line);
+            bpStringBuilder.append(ls);
+            return bpStringBuilder.toString();
+        }
+        // /endcopy
+            }
+        catch(FileNotFoundException e){
+            System.out.println(e.getMessage());
+        }
+        return null;
+        }
+    /*public static String[] codonCreator(String codonString){
+        String start_position = cMap.get("ATG");
+        String quit_position1 = cMap.get("TAA");
+        String quit_position2 = cMap.get("TAG");
+        String quit_position3 = cMap.get("TGA");
+        
+        
+        
+        return codonCreator;
+    } */
+    
+    public static void main(String[] args) throws IOException{
+        
+        String bpFiler = fileTranslator(bpfile);
+        System.out.println(bpFiler);
+        System.out.println(cMap.get("AAA"));
+                    
+      
     
 }
 }
+
