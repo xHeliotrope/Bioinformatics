@@ -1,4 +1,5 @@
 package population.genetics;
+
 /* import java.util.Scanner; */
 
 /*outputs random transition/transversion rates of a random sequence
@@ -9,7 +10,7 @@ package population.genetics;
 public class PopulationGenetics {
 
     static String[] basepairs = {"A", "T", "C", "G"};
-    static int ts = 0, tv = 0;
+    static int ts = 0, tv = 0, PopLength;
     
     public static String RandomBasePair (String[] args) {
         int i = (int)(Math.random()*(4));
@@ -100,12 +101,10 @@ public class PopulationGenetics {
      
     }
     
-    public static void main(String[] args) {
-
-      /*System.out.println("Enter DNA Length(1-1000bp): ");
-      Scanner bpinput = new Scanner(System.in);  */
-      
-      String[][] Population = RandomPopulation (12,200);
+    
+    public static void main(String[] args){
+   
+      String[][] Population = RandomPopulation(12,PopLength);
       Population = Mutation(Population, .1);
        
       double tsRate = ts / Population.length;
@@ -119,8 +118,8 @@ public class PopulationGenetics {
       
       
        
-        
+      }  
     }
-}
+
     
 
