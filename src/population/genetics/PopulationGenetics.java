@@ -46,9 +46,9 @@ public class PopulationGenetics {
     
     {
         if ("A".equals(Population[i][j])){
-            String[] Pairs = {"c","t","g"};
+            String[] Pairs = {"C","T","G"};
             Population[i][j] = MutateBasePair(Pairs);
-            if ("g".equals(Population[i][j])){
+            if ("G".equals(Population[i][j])){
                 ts++;
                 }
             else{
@@ -56,9 +56,9 @@ public class PopulationGenetics {
             }
         }
         else if ("C".equals(Population[i][j])){
-            String[] Pairs= {"a","t","g"};
+            String[] Pairs= {"A","T","G"};
             Population[i][j] = MutateBasePair(Pairs);
-            if ("t".equals(Population[i][j])){
+            if ("T".equals(Population[i][j])){
                 ts++;
                 }
             else{
@@ -66,9 +66,9 @@ public class PopulationGenetics {
             }
         }
         else if ("T".equals(Population[i][j])){
-            String[] Pairs= {"c","a","g"};
+            String[] Pairs= {"C","A","G"};
             Population[i][j] = MutateBasePair(Pairs);
-            if ("c".equals(Population[i][j])){
+            if ("C".equals(Population[i][j])){
                 ts++;
                 }
             else{
@@ -76,9 +76,9 @@ public class PopulationGenetics {
             }
         }
         else{
-            String[] Pairs= {"c","t","a"};
+            String[] Pairs= {"C","T","A"};
             Population[i][j] = MutateBasePair(Pairs);
-            if ("a".equals(Population[i][j])){
+            if ("A".equals(Population[i][j])){
                 ts++;
                 }
             else{

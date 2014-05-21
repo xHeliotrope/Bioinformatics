@@ -1,3 +1,4 @@
+
 /*
  * Hashmap for Codons and associated Amino Acids
  * 
@@ -9,21 +10,30 @@ package population.genetics;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
+import static java.nio.charset.Charset.defaultCharset;
+import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
+import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.InputMismatchException;
 import java.util.Map;
 
 public class Codon{
     static String bpfile = "C:\\Users\\rmoor_000\\Documents\\NetBeans"
             + "Projects\\Population Genetics\\src\\population\\genetics\\"
-            + "bpdata.dat";
-     
+            + "bpdata3.dat";
+    
+    
+    
+    
     private static final Map<String, String> cMap;
         static {
         Map<String, String> CodonMap = new HashMap<>(); 
-        CodonMap.put("AAT", "I");
+        CodonMap.put("ATT", "I");
         CodonMap.put("ATC", "I");
         CodonMap.put("ATA", "I");
         CodonMap.put("CTT", "L");
@@ -38,7 +48,7 @@ public class Codon{
         CodonMap.put("GTG", "V");
         CodonMap.put("TTT", "F");
         CodonMap.put("TTC", "F");
-        CodonMap.put("ATG", "--START--M");
+        CodonMap.put("ATG", "M");
         CodonMap.put("TGT", "C");
         CodonMap.put("TGC", "C");
         CodonMap.put("GCT", "A");
@@ -88,47 +98,87 @@ public class Codon{
         CodonMap.put("TAG", "STOP");
         CodonMap.put("TGA", "STOP");
         cMap = Collections.unmodifiableMap(CodonMap);
-    }
-    
-    public static String fileTranslator(String newfile) throws IOException {
-        try {
-        BufferedReader bpInput = new BufferedReader(new FileReader(newfile));
-        String line;
-        StringBuilder bpStringBuilder = new StringBuilder();
-        String ls = System.getProperty("line.separator");
-        
-        //Code taken from unknown user at stackoverflow.com
-        while((line = bpInput.readLine())!= null){
-            bpStringBuilder.append(line);
-            bpStringBuilder.append(ls);
-            return bpStringBuilder.toString();
-        }
-        // /endcopy
             }
-        catch(FileNotFoundException e){
-            System.out.println(e.getMessage());
-        }
-        return null;
-        }
-    /*public static String[] codonCreator(String codonString){
-        String start_position = cMap.get("ATG");
-        String quit_position1 = cMap.get("TAA");
-        String quit_position2 = cMap.get("TAG");
-        String quit_position3 = cMap.get("TGA");
         
+        public static String aminoconvert(String aminoStartCut){
+            String aminostring = new String();
+            int modified_length = aminoStartCut.length()-4;
+            for(int i = 0; i < modified_length; i+=3){
+                String temp = new String();
+                temp += aminoStartCut.charAt(i);
+                temp += aminoStartCut.charAt(i+1);
+                temp += aminoStartCut.charAt(i+2);
+                if ("TAA".equals(temp) || "TAG".equals(temp) || 
+                        "TGA".equals(temp)){
+                    return aminostring;
+                    }
+                else{
+                    aminostring += cMap.get(temp); 
+                    }
+                    }
+            
+            return aminostring;
+                }
         
+        public static String codingregion(String bpairs){
+            int startindex = bpairs.indexOf("ATG");
+            String aminoStartCut = new String();
+            while (startindex < bpairs.length()){
+                aminoStartCut += Character.toString(bpairs.charAt(startindex));
+                startindex++;
+                }
+            return aminoStartCut;
+            }
         
-        return codonCreator;
-    } */
-    
+        public static String fileTranslator(String filename, Charset encoding) 
+                throws IOException {
+            try {
+                byte[] encoded = Files.readAllBytes(Paths.get(filename));
+                String withspaces = new String(encoded, encoding);
+                String nospaces = withspaces.replaceAll("\\r|\\n", "");
+                return nospaces;
+                }
+                catch(NoSuchFileException e){
+                    System.out.println(e.getMessage());
+                    System.out.println("hey there isn't a file");
+                    System.exit(0);
+                }
+                return null;
+                }
+        
+        public static String fileGrabber() throws IOException{
+            try {
+            String def = "Default";
+            String userinput;
+            System.out.println("Enter a file path or enter 'default'");
+            BufferedReader brinput = new BufferedReader
+                                            (new InputStreamReader(System.in));
+            userinput = brinput.readLine();
+            if (userinput.equalsIgnoreCase(def)){
+                userinput = bpfile;
+                }   
+            return userinput;
+                }
+            catch(InputMismatchException e){
+                e.getMessage();
+                }
+            return null;
+                    }
+        
     public static void main(String[] args) throws IOException{
+        try {
+            Charset encoding = defaultCharset();
+            String firstpath = fileGrabber();
+            String bpairs = fileTranslator(firstpath, encoding);
+            String aminostring = codingregion(bpairs);
+            String finishedprod = aminoconvert(aminostring);
+            System.out.print(finishedprod + "\n                                A");
+            System.out.flush();
+            }
         
-        String bpFiler = fileTranslator(bpfile);
-        System.out.println(bpFiler);
-        System.out.println(cMap.get("AAA"));
-                    
-      
-    
-}
-}
-
+        catch (FileNotFoundException e){
+            System.out.println(e.getMessage());
+            
+            }
+        }
+        }
