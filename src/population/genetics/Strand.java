@@ -139,6 +139,95 @@ import java.util.Map;
            return toreturn;
             }
        
+       protected static void twoSequenceAlignment(char[] elementstrand1, 
+                char[] elementstrand2){
+            int mismatch = -1;
+            int match = 2;
+            int gap = -1;
+            int west, south, southwest;
+            int gridMax=0, gridMaxJ =0, gridMaxI=0;
+            
+            String alignedString1 = new String(), alignedString2 = new String();
+            int[][] alignGrid= 
+                    new int[elementstrand1.length][elementstrand2.length];
+            
+            for(int i=0; i<elementstrand1.length-1;i++){
+                alignGrid[i][0]+=(gap*i);
+                }
+            for(int i=0; i<elementstrand2.length-1;i++){
+                alignGrid[0][i]+=(gap*i);
+                }
+            for(int j=1;j<=elementstrand1.length-1;j++){
+                for(int i=1; i<=elementstrand2.length-1;i++){
+                    south = alignGrid[j-1][i]+gap;
+                    west = alignGrid[j][i-1]+gap;
+                    
+                    if(elementstrand1[j]==elementstrand2[i]){
+                        southwest = alignGrid[j-1][i-1]+match;
+                        }
+                    else{
+                        southwest = alignGrid[j-1][i-1]+mismatch;
+                        }
+                    
+                    if(southwest>=west&&southwest>=south){
+                        alignGrid[j][i]+=southwest;
+                        if(alignGrid[j][i]>gridMax){
+                            gridMax = alignGrid[j][i];
+                            gridMaxJ=j;
+                            gridMaxI=i;
+                        }
+                        }
+                    else if(west>=southwest&&west>south){
+                        alignGrid[j][i]+=west;
+                        if(alignGrid[j][i]>gridMax){
+                            gridMax = alignGrid[j][i];
+                            gridMaxJ=j;
+                            gridMaxI=i;
+                        }
+                        }
+                    else{
+                        alignGrid[j][i]+=south;
+                        if(alignGrid[j][i]>gridMax){
+                            gridMax = alignGrid[j][i];
+                            gridMaxJ=j;
+                            gridMaxI=i;
+                        }
+                        }
+                        }
+                        }
+        
+            for(int j = gridMaxJ, 
+                i = gridMaxI; i>0 && j>0; ){
+                    southwest = alignGrid[j-1][i-1];
+                    south = alignGrid[j][i-1];
+                    west = alignGrid[j-1][i];
+                    
+                   if(southwest>west && southwest>south){
+                        alignedString1 +=elementstrand1[j];
+                        alignedString2 +=elementstrand2[i];
+                        j--;
+                        i--;
+                        }
+                   else if(west>=southwest&&west>=south){
+                        alignedString1 +=elementstrand1[j];
+                        alignedString2 +="-";
+                        j--;
+                        }
+                    else{
+                        alignedString1 += "-";
+                        alignedString2 +=elementstrand2[i];
+                        i--;
+                        }
+                   
+                   if(i<0 || j<0){
+                       break;
+                   }
+                }
+                      
+            System.out.println("Sequence A: " + new StringBuilder(alignedString1).reverse().toString());
+            System.out.println("Sequence B: " + new StringBuilder(alignedString2).reverse().toString());
+            }
+       
        
        
         public static void main(String[] args)throws IOException{
@@ -154,13 +243,7 @@ import java.util.Map;
                 System.out.println(e.getMessage());
            }
        
-  }
-       
-    
-   
-        
-        
-        
+  } 
   }
 
     

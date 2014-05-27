@@ -71,27 +71,86 @@ public class AminoAcids extends Strand {
             Output("Amino Acid String");
         }
         /*needs checking*/
+        
         public char[] alignmentPrep(String elementstrand){
             int j = elementstrand.length();
             int k = j+1;
-            int f = j-1;
             int i = 0;
             int h = 1;
             char[] aminoAlignment = new char[k];
-
             while(i<j){
                 aminoAlignment[h]=elementstrand.charAt(i);
                 i++;
                 h++;
                 }
                 return aminoAlignment;
-}
+                }
+        
+        public int[][] doubleAlignment(char[] elementstrand1, 
+                char[] elementstrand2) throws ArrayIndexOutOfBoundsException{
+            int mismatch = -1;
+            int match = 1;
+            int gap = -2;
+            int west, south, southwest;
+            
+            try {
+                String alignedString1 = new String(),
+                        alignedString2 = new String();
+                int k = 1;
+            int[][] alignGrid= 
+                    new int[elementstrand1.length+1][elementstrand2.length+1];
+            for(int i=0; alignGrid[i][0]<elementstrand1.length;i++){
+                alignGrid[i][0]+=gap;
+                }
+            for(int i=0; alignGrid[0][i]<elementstrand2.length;i++){
+                alignGrid[0][i]+=gap;
+                }
+            for(int j=1;alignGrid[j][0]<elementstrand1.length;j++){
+                for(int i = 1; alignGrid[j][i]<elementstrand2.length;i++){
+                    south = alignGrid[j][i-1]+gap;
+                    west = alignGrid[j-1][i]+gap;
+                    if(elementstrand1[i-1]==elementstrand2[i-1]){
+                        southwest = alignGrid[j-1][i-1]+match;
+                        }
+                    else{
+                        southwest = alignGrid[j-1][i-1]+mismatch;
+                        }
+                    
+                    if(southwest>west&&southwest>south){
+                        alignGrid[j][i]+=southwest;
+                        alignedString1 +=elementstrand1[k];
+                        alignedString2 +=elementstrand2[k];
+                        k++;
+                    }
+                    else if(west>=southwest&&west>=south){
+                        alignGrid[j][i]+=west;
+                        alignedString1 += "";
+                        alignedString2 +=elementstrand2[k];
+                        k++;
+                    }
+                    else{
+                        alignGrid[j][i]+=south;
+                        alignedString1 +=elementstrand1[k];
+                        alignedString2 +="";
+                        k++;
+                    }
+                    
+                    }
+            }
+            return alignGrid;
+            }
+        catch(ArrayIndexOutOfBoundsException e){
+                e.getMessage();
+                }
+             return null;
+            }
+            
         public AminoAcids aaPrep(){
             AminoAcids temp = new AminoAcids();
             temp.alignmentPrep(elementstrand);
             return temp;
-            
-        }
+            }
+        
 
         // endcheck
 }
