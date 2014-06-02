@@ -1,8 +1,10 @@
 /*
- Use freely.
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
  */
 
-package bioinformatics;
+package population.genetics;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -10,17 +12,12 @@ import java.util.Map;
 
 /**
  *
- * @author Ryan Moore
+ * @author rmoor_000
  */
-
    public class DNA extends Strand{
-       
-      //Included both the DNA and AA elements in arrays for error checking
-      //purposes
-      private static final char[] DNAelements = {'A','T','G','C'}; 
-      private static final char[] Aminoelements = {'L','I','M','F','S','G','R',
-          'H','V','Q','W','C','T','D','K','N','Y','E','P','A'};
-      //Map used to convert DNA triple(Codon) into an Amino Acids
+      private static final char[] DNAelements = {'A','T','G', 'C'}; 
+      private static final char[] Aminoelements = {'L','I','M','F','S','G','R','H','V',
+            'Q','W','C','T','D','K','N','Y','E','P','A'};
       private final Map<String, String> CodonMap = new HashMap<String,String>(){ 
           { put("ATT", "I");
             put("ATC", "I");
@@ -85,27 +82,20 @@ import java.util.Map;
             put("AGG", "R");
             }
             };
-        
-        //sets the elementstrand to the DNA class
+      
         public void SetTo(DNA setto){
             elementstrand=setto.elementstrand;
             }
-        
-        //Used to check that the elements of elementstrand are DNA elements
         public boolean DNALoad()throws IOException{
             return StrandLoad(DNAelements,"DNA Sequence");
             }
         
-        //Trims the Upstream Leader Sequence of the elementstrand and
-        //returns the DNA instance
         private DNA trim(){
             DNA trimmed = new DNA();
             trimmed.Input(trimstrand("ATG",3),DNAelements);
             return trimmed;
             }
         
-        //translates the DNA instance to its corresponding AA sequence
-        //returns the DNA instance, uses converstrand, Input methods
         private DNA translate(){
             String[] stop={"TAA","TAG","TGA"};
             DNA conversion = new DNA();
@@ -113,8 +103,6 @@ import java.util.Map;
             return conversion;
             }
         
-        //instatiates AminoAcid and DNA objects, uses SetTo, trim, input methods
-        //to modify and verify the returned Amino Acid instance
         public AminoAcids toAmino(){
             AminoAcids temp= new AminoAcids();
             DNA DNAtemp= new DNA();
@@ -123,9 +111,16 @@ import java.util.Map;
             temp.Input(DNAtemp.elementstrand,Aminoelements);
             return temp;
         }
-        
-        //correctly names the DNA type for Strand output method
         public void Output(){
             Output("DNA Sequence");
         }
     }
+
+
+
+
+
+
+
+    
+

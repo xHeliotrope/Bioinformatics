@@ -1,5 +1,5 @@
 /*
- Use freely(except on homework).
+ Use freely.
  */
 
 package bioinformatics;
@@ -22,12 +22,7 @@ public class AminoAcids extends Strand {
          
          //default strand data later used for creating a dictionary lookup for
          //a 2D String Array
-         public static String[] defaultStrandNames = {"Minnow", "ZebraFish", "Old World Bird", "Rock Dove"};
-         public static String[] strandLocations = 
-         {"http://umsl.edu/~ram9pd/rutilusrutilusEstrogenR.dat", 
-             "http://umsl.edu/~ram9pd/daniorerioEstrogenR.dat", 
-             "http://umsl.edu/~ram9pd/torgostracheliotusEstrogenR.dat", 
-             "http://umsl.edu/~ram9pd/columbialiviaEstrogenR.dat"};
+
         
          //Inverse of the DNA/AA CodonMap. More of a reference(note: using this 
          //map may result in a super lengthy sequence)
@@ -99,7 +94,8 @@ public class AminoAcids extends Strand {
          
          //creates a 2D String Array for AA sequences to match the AA name to 
          //its sequence
-         public String[][] defaultStrandLoader(String[] defaultStrandNames){
+         public AminoAcids defaultAminoLoader(){
+             AminoAcids temp = new AminoAcids();
              if(defaultStrandNames.length != strandLocations.length){
                  System.out.println("Differing Number of Lengths and Locations, "
                          + "does not compute.");
@@ -107,13 +103,14 @@ public class AminoAcids extends Strand {
                  }
              int strandAmounts = defaultStrandNames.length;
              String[][] defaultStrandSequences = new String[strandAmounts][2];
-             for(int j = 0; j < strandLocations.length-1;j++){
+             for(int j = 0; j < strandLocations.length;j++){
                  for(int i = 0; i < 2;i++){
                      defaultStrandSequences[j][0] = defaultStrandNames[j];
                      defaultStrandSequences[j][1] = strandLocations[j];
                  }
              }
-             return defaultStrandSequences;
+             aminoGrid = defaultStrandSequences;
+             return temp;
          }
         
 }

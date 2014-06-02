@@ -1,5 +1,5 @@
 /*
- Use freely(except on homework).
+ Use freely.
  */
 package bioinformatics;
 
@@ -23,9 +23,17 @@ import java.util.Scanner;
 
   public class Strand {
       
-      public String elementstrand=new String();
-      
+         public static String[] defaultStrandNames = {"Minnow", "ZebraFish", 
+             "Old World Bird", "Rock Dove"};
+         public static String[] strandLocations = 
+         {"http://umsl.edu/~ram9pd/rutilusrutilusEstrogenR.dat", 
+             "http://umsl.edu/~ram9pd/daniorerioEstrogenR.dat", 
+             "http://umsl.edu/~ram9pd/torgostracheliotusEstrogenR.dat", 
+             "http://umsl.edu/~ram9pd/columbialiviaEstrogenR.dat"};
+      public static String elementstrand=new String();
+      public static String[][] aminoGrid;
       //creates a 2-D Array as a sort of dictionary for Default Strand Sequences  
+     
       protected String[][] defaultStrandLoader(String[] defaultStrandNames,
                                                     String[] strandLocations){
         if(defaultStrandNames.length != strandLocations.length){
@@ -143,8 +151,27 @@ import java.util.Scanner;
             return null;
                     }
         
-        //Retrieves Devault Strands to use(for Sequence Alignment) from URL
-        private static String[] defaultFileLoader(String[] strandLocations) 
+        //
+        private static String[] aaLocal(){
+            String[] temp = new String[aminoGrid.length];
+            for(int i = 0; i <aminoGrid.length;i++){
+                temp[i] = aminoGrid[i][1];
+                }
+            return temp;
+            }
+        
+        //
+        private char[] sToChar(String localString){
+            char[] singleStrandElements = new char[localString.length()];
+            singleStrandElements = localString.toCharArray();
+            return singleStrandElements;
+        }
+        
+        //private static char[][] charTwoArray()
+        
+
+        //Retrieves Default Strands to use(for Sequence Alignment) from URL
+        private static String[] defaultFileConversion(String[] strandLocations) 
                 throws IOException {
             try{
                 String[] defaultStrandsFromURL =
@@ -154,9 +181,7 @@ import java.util.Scanner;
                             new URL(strandLocations[i]).openStream(), "UTF-8")
                             .useDelimiter("\\A").next();
                     defaultStrandsFromURL[i] = urlFileCapture;
-                    System.out.println("My string " + i + " is" + 
-                            defaultStrandsFromURL[i]);
-                }
+                    }
                 return defaultStrandsFromURL;
                 }
             catch(IOException e1){
@@ -195,7 +220,8 @@ import java.util.Scanner;
                 j = 0;
                 while(j <elements.length+1){
                     if (j==elements.length) {
-                        System.out.println("Input error, data outside base pairs");
+                        System.out.println("Input error, data outside "
+                                + "base pairs");
                         return false;
                     }
                     if(elementcode.charAt(i) ==elements[j]){
@@ -362,7 +388,36 @@ import java.util.Scanner;
                     new StringBuilder(alignedString2).reverse().toString());
             }
         
-        
+         private int distanceCalculator(int[][] alignGrid){
+            int southwest, south, west, gridMaxJ, gridMaxI, changes=0;
+            gridMaxJ = alignGrid.length;
+            gridMaxI = alignGrid[0].length;
+            for(int j = gridMaxJ, i = gridMaxI; i>0 && j>0; ){
+                    southwest = alignGrid[j-1][i-1];
+                    south = alignGrid[j][i-1];
+                    west = alignGrid[j-1][i];
+                   if(southwest>west && southwest>south){
+                        if(southwest == alignGrid[i][j]+1){
+                            changes++;
+                            }
+                        j--;
+                        i--;
+                        }
+                   else if(west>=southwest&&west>=south){
+                        changes++;
+                        j--;
+                        }
+                    else{
+                        changes++;
+                        i--;
+                        }
+                   if(i<0 || j<0){
+                       break;
+                   }
+                }
+            System.out.println("The Distance is :" + changes);
+            return changes; 
+            }
         //calls the alignmentMatrix, the gridMaxPosition, and seqAlignOutput
         //methods
         private void sequenceAlignment(char[] elementstrand1, 
@@ -399,4 +454,18 @@ import java.util.Scanner;
            }
            return null;
            }       
+ 
+  
+        
+        public static void main(String[] args) throws IOException{
+            AminoAcids alignAmino = new AminoAcids();
+            alignAmino.defaultAminoLoader();
+            String[] newstring = defaultFileConversion(aaLocal());
+          //  char[][] newCharArray = sToChar(newstring);
+        }
+  
+  
+  
+        
   }
+
