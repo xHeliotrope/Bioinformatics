@@ -86,8 +86,7 @@ public class AlignmentTest{
     }
 
     @Test
-    public void dnaToAaTest() throws IOException{
-        System.out.println("oh hai there");
+    public void dnaToAaTest() throws IOException {
         DNA dna1 = new DNA(aFactory.sequenceDataRead("sequences/testSequences/notNullRegularNucleicSequence.dat"));
         AminoAcid fromDNA1 = aFactory.dnaConverter(dna1);
         System.out.println("Length of AA String: " + fromDNA1.getAAString().length() + '\n'

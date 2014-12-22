@@ -92,7 +92,6 @@ public class AminoAcid extends Sequence {
         return convertStrand(cutSequence);
     }
 
-
     private String cutUpStreamSequence(String precutSequence){
         String codonCheck = "";
         for(int i = 0; i < precutSequence.length()-5; i++){
