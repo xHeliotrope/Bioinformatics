@@ -9,12 +9,17 @@ import xheliotrope.Sequence;
 
 public class DNA extends Sequence {
 
-    public DNA(String dnaString){
+    public DNA(String dnaString, String name){
         this.dnaString = dnaString;
+        this.name = name;
     }
     private String dnaString;
+    private String name;
 
-    public String getDNAString(){
+    public String getName(){
+        return this.name;
+    }
+    public String getSequenceString(){
         return this.dnaString;
     }
 

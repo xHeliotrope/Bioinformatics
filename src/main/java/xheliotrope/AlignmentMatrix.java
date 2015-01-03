@@ -14,99 +14,88 @@ public class AlignmentMatrix {
 
     private Sequence sequence1, sequence2;
 
-
-    //Creates a Matrix for a Sequence Alignment(needs 2 AA/DNA Strands)
-    private int[][] alignmentMatrix(char[] elementstrand1,
-                                           char[] elementstrand2){
-        int mismatch = -1;
-        int match = 2;
-        int gap = -1;
+    private int[][] alignmentGrid(char[] elementstrand1, char[] elementstrand2) {
+        int mismatch = -4;
+        int match = 8;
+        int gap = -3;
         int west, south, southwest;
+        int[][] alignGrid= new int[elementstrand1.length][elementstrand2.length];
 
-        int[][] alignGrid=
-                new int[elementstrand1.length][elementstrand2.length];
+        for (int i = 0; i < elementstrand1.length-1; i++) {
+            alignGrid[i][0] = gap*i;
+        }
 
-        for(int i=0; i<elementstrand1.length-1;i++){
-            alignGrid[i][0]+=(gap*i);
+        for (int i = 0; i < elementstrand2.length-1; i++) {
+            alignGrid[0][i] = gap*i;
         }
-        for(int i=0; i<elementstrand2.length-1;i++){
-            alignGrid[0][i]+=(gap*i);
-        }
-        for(int j=1;j<=elementstrand1.length-1;j++){
-            for(int i=1; i<=elementstrand2.length-1;i++){
+
+        for(int j = 1; j <= elementstrand1.length-1; j++) {
+            for(int i = 1; i <= elementstrand2.length-1; i++) {
                 south = alignGrid[j-1][i]+gap;
                 west = alignGrid[j][i-1]+gap;
-                if(elementstrand1[j]==elementstrand2[i]){
-                    southwest = alignGrid[j-1][i-1]+match;
+                southwest = alignGrid[j-1][i-1];
+                southwest += (elementstrand1[j] == elementstrand2[i]) ? match : mismatch;
+
+                if(southwest > west && southwest > south){
+                    alignGrid[j][i] += southwest;
+                    continue;
                 }
-                else{
-                    southwest = alignGrid[j-1][i-1]+mismatch;
-                }
-                if(southwest>=west&&southwest>=south){
-                    alignGrid[j][i]+=southwest;
-                }
-                else if(west>=southwest&&west>south){
-                    alignGrid[j][i]+=west;
-                }
-                else{
-                    alignGrid[j][i]+=south;
-                }
+                alignGrid[j][i] = (west >= south) ? west : south;
             }
         }
         return alignGrid;
     }
 
-    private void seqAlignOutput(int[][] alignGrid, int[] maxPosition,
+    private void seqAlignOutput(int[][] alignGrid,
                                 char[] elementstrand1, char[] elementstrand2){
-        int southwest, south, west, gridMaxJ, gridMaxI;
-        gridMaxJ = maxPosition[0];
-        gridMaxI = maxPosition[1];
-        String alignedString1 = new String(), alignedString2 = new String();
 
-        for(int j = gridMaxJ, i = gridMaxI; i>0 && j>0; ){
+        int southwest, south, west;
+        StringBuilder alignedString1 = new StringBuilder();
+        StringBuilder alignedString2 = new StringBuilder();
+
+        for(int j = alignGrid.length-1, i = alignGrid[0].length-1; i>0 && j>0; ){
             southwest = alignGrid[j-1][i-1];
             south = alignGrid[j][i-1];
             west = alignGrid[j-1][i];
 
             if(southwest>west && southwest>south){
-                alignedString1 +=elementstrand1[j];
-                alignedString2 +=elementstrand2[i];
+                alignedString1.append(elementstrand1[j]);
+                alignedString2.append(elementstrand2[i]);
                 j--;
                 i--;
             }
             else if(west>=southwest&&west>=south){
-                alignedString1 +=elementstrand1[j];
-                alignedString2 +="-";
+                alignedString1.append(elementstrand1[j]);
+                alignedString2.append("-");
                 j--;
             }
             else{
-                alignedString1 += "-";
-                alignedString2 +=elementstrand2[i];
+                alignedString1.append("-");
+                alignedString2.append(elementstrand2[i]);
                 i--;
             }
-            if(i<0 || j<0){
+            if(i < 0 || j < 0){
                 break;
             }
         }
         System.out.println("Sequence A: " +
-                new StringBuilder(alignedString1).reverse().toString());
+                alignedString1.reverse());
         System.out.println("Sequence B: " +
-                new StringBuilder(alignedString2).reverse().toString());
+                alignedString2.reverse());
     }
 
-    private int[] gridMaxPosition(int[][] gridMax){
-        int[] maxPosition = new int[2];
-        int totalMax=0, iMax=0, jMax=0;
-        for(int j=0; j<gridMax.length;j++){
-            for(int i=0; i<gridMax[j].length;i++){
-                if(gridMax[j][i]>totalMax){
-                    iMax = i;
-                    jMax = j;
-                }
-            }
-        }
-        maxPosition[0]=jMax;
-        maxPosition[1]=iMax;
-        return maxPosition;
+    public Alignment alignmentFromMatrix(){
+        char[] compareSequence1 = sequence1.getSequenceString().toCharArray();
+        char[] compareSequence2 = sequence2.getSequenceString().toCharArray();
+        int[][] alignmentGrid = alignmentGrid(compareSequence1, compareSequence2);
+        int score = alignmentGrid[compareSequence1.length-1][compareSequence2.length-1];
+        return new Alignment(sequence1, sequence2, score);
+    }
+    public void viewAlignmentBetweenSequences(){
+        char[] compareSequence1 = sequence1.getSequenceString().toCharArray();
+        char[] compareSequence2 = sequence2.getSequenceString().toCharArray();
+        int[][] alignmentGrid = alignmentGrid(compareSequence1, compareSequence2);
+        seqAlignOutput(alignmentGrid, compareSequence1, compareSequence2);
+        System.out.println("and the score is: " + alignmentGrid[compareSequence1.length-1][compareSequence2.length-1]);
     }
 }

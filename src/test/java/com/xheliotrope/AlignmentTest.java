@@ -61,12 +61,12 @@ public class AlignmentTest{
         return valid;
     }
 
-    public void dnaInputChecker(String testLocation) throws IOException {
+    private void dnaInputChecker(String testLocation) throws IOException {
         String sequenceString = aFactory.sequenceDataRead(testLocation);
         Assert.assertTrue(isValidNucleicAcid(sequenceString));
     }
 
-    public void aminoInputChecker(String testLocation) throws IOException {
+    private void aminoInputChecker(String testLocation) throws IOException {
         String sequenceString = aFactory.sequenceDataRead(testLocation);
         Assert.assertTrue(isValidAminoAcid(sequenceString));
     }
@@ -89,19 +89,16 @@ public class AlignmentTest{
     public void dnaToAaTest() throws IOException {
         DNA dna1 = new DNA(aFactory.sequenceDataRead("sequences/testSequences/notNullRegularNucleicSequence.dat"));
         AminoAcid fromDNA1 = aFactory.dnaConverter(dna1);
-        System.out.println("Length of AA String: " + fromDNA1.getAAString().length() + '\n'
-                + "Length of DNA String: " + dna1.getDNAString().length());
-        Assert.assertTrue(fromDNA1.getAAString().length() == dna1.getDNAString().length());
+        System.out.println("Length of AA String: " + fromDNA1.getSequenceString().length() + '\n'
+                + "Length of DNA String: " + dna1.getSequenceString().length());
+        Assert.assertTrue(fromDNA1.getSequenceString().length()*3 <= dna1.getSequenceString().length());
     }
 
-    @Test
+    @Test(expected = ImproperDNASequenceException.class)
     public void dnaToAaWithImproperLengthTest() throws IOException{
         System.out.println("In Test with Errors 1: {");
         DNA dna2 = new DNA(aFactory.sequenceDataRead("sequences/testSequences/withImproperLengthNucleicSequence.dat"));
         AminoAcid fromDNA1 = aFactory.dnaConverter(dna2);
-        System.out.println("Length of AA String: " + fromDNA1.getAAString().length() + '\n'
-         + "Length of DNA String: " + dna2.getDNAString().length());
-        Assert.assertTrue(fromDNA1.getAAString().length()*3 <= dna2.getDNAString().length());
         System.out.println("}");
     }
 

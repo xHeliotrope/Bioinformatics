@@ -10,11 +10,12 @@ import java.util.*;
 
 public class AminoAcid extends Sequence {
 
-    public AminoAcid(){}
-    public AminoAcid(String aaString){
+    public AminoAcid(String aaString, String name){
         this.aaString = aaString;
+        this.name = name;
     }
 
+    private String name;
     private String aaString;
     private String[] stopCodon = {"tag", "taa", "tga"};
     private final Map<String, String> codonMap = new HashMap<String,String>(){
@@ -83,16 +84,24 @@ public class AminoAcid extends Sequence {
         }
     };
 
-    public String getAAString(){
+    public String getSequenceString(){
         return this.aaString;
+    }
+    public String getName(){
+        return this.name;
     }
 
     public AminoAcid dnaToAmino(DNA dna){
-        String cutSequence = cutUpStreamSequence(dna.getDNAString());
-        return convertStrand(cutSequence);
+        try {
+            DNA cutSequence = new DNA(cutUpStreamSequence(dna.getSequenceString()), dna.getName() + " (trimmed Strand)");
+            return convertStrand(cutSequence);
+        }
+        catch(ImproperDNASequenceException e){
+        }
+        throw new IllegalStateException();
     }
 
-    private String cutUpStreamSequence(String precutSequence){
+    private String cutUpStreamSequence(String precutSequence) throws ImproperDNASequenceException{
         String codonCheck = "";
         for(int i = 0; i < precutSequence.length()-5; i++){
             codonCheck = precutSequence.substring(i, i+3);
@@ -100,19 +109,18 @@ public class AminoAcid extends Sequence {
                 return precutSequence.substring(i, precutSequence.length());
             }
         }
-        System.out.println("Warning: Could not trim sequence");
-        return precutSequence;
+        throw new ImproperDNASequenceException();
     }
 
-    private AminoAcid convertStrand(String dnaString){
+    private AminoAcid convertStrand(DNA dna){
         String newAminoSequence = "";
         String codon = "";
         try {
-            for (int i = 0; i < dnaString.length(); i += 3) {
-                codon = dnaString.substring(i, i + 3);
+            for (int i = 0; i < dna.getSequenceString().length(); i += 3) {
+                codon = dna.getSequenceString().substring(i, i + 3);
                 for (String terminator : stopCodon) {
                     if (codon.equals(terminator)) {
-                        return new AminoAcid(newAminoSequence);
+                        return new AminoAcid(newAminoSequence, dna.getName() + "(from DNA)");
                     }
                 }
                 newAminoSequence += codonMap.get(codon);
@@ -122,7 +130,7 @@ public class AminoAcid extends Sequence {
             System.out.println("Error in readable region of DNA");
         }
         System.out.println("Potential Error: never ran into a terminator codon during translation");
-        return new AminoAcid(newAminoSequence);
+        return new AminoAcid(newAminoSequence, "erroneous Amino Strand");
     }
 
 }
