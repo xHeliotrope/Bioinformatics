@@ -35,12 +35,7 @@ public class AlignmentMatrix {
                 west = alignGrid[j][i-1]+gap;
                 southwest = alignGrid[j-1][i-1];
                 southwest += (elementstrand1[j] == elementstrand2[i]) ? match : mismatch;
-
-                if(southwest > west && southwest > south){
-                    alignGrid[j][i] += southwest;
-                    continue;
-                }
-                alignGrid[j][i] = (west >= south) ? west : south;
+                alignGrid[j][i] = (southwest > west && southwest > south) ? southwest : (west >= south) ? west : south;
             }
         }
         return alignGrid;

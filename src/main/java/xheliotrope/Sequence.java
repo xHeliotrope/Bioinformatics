@@ -6,15 +6,16 @@ package xheliotrope;
  */
 public abstract class Sequence {
     public Sequence(){}
-    public Sequence(String mySequence, String sequenceName){
-        this.sequenceName = sequenceName;
+    public Sequence(String mySequence, String latinName, String commonName){
+        this.mySequence = mySequence;
+        this.latinName = latinName;
+        this.commonName = commonName;
     }
 
-    private String sequenceName;
+    private String mySequence, latinName, commonName;
 
-    public String getSequenceName(){
-        return this.sequenceName;
-    }
-
+    public abstract String getFullName();
+    public abstract String getLatinName();
+    public abstract String getCommonName();
     public abstract String getSequenceString();
 }

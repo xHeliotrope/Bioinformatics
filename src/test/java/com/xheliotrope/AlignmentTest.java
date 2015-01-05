@@ -87,7 +87,7 @@ public class AlignmentTest{
 
     @Test
     public void dnaToAaTest() throws IOException {
-        DNA dna1 = new DNA(aFactory.sequenceDataRead("sequences/testSequences/notNullRegularNucleicSequence.dat"));
+        DNA dna1 = new DNA(aFactory.sequenceDataRead("sequences/testSequences/notNullRegularNucleicSequence.dat"), "regular", "");
         AminoAcid fromDNA1 = aFactory.dnaConverter(dna1);
         System.out.println("Length of AA String: " + fromDNA1.getSequenceString().length() + '\n'
                 + "Length of DNA String: " + dna1.getSequenceString().length());
@@ -97,7 +97,7 @@ public class AlignmentTest{
     @Test(expected = ImproperDNASequenceException.class)
     public void dnaToAaWithImproperLengthTest() throws IOException{
         System.out.println("In Test with Errors 1: {");
-        DNA dna2 = new DNA(aFactory.sequenceDataRead("sequences/testSequences/withImproperLengthNucleicSequence.dat"));
+        DNA dna2 = new DNA(aFactory.sequenceDataRead("sequences/testSequences/withImproperLengthNucleicSequence.dat"), "badLength", "");
         AminoAcid fromDNA1 = aFactory.dnaConverter(dna2);
         System.out.println("}");
     }

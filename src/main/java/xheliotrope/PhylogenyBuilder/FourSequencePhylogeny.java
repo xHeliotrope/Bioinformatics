@@ -17,6 +17,7 @@ public class FourSequencePhylogeny {
 
     private Sequence seq1, seq2, seq3, seq4;
 
+    public FourSequencePhylogeny(){}
     public FourSequencePhylogeny(Sequence seq1, Sequence seq2, Sequence seq3, Sequence seq4){
         this.seq1 = seq1;
         this.seq2 = seq2;
@@ -43,13 +44,47 @@ public class FourSequencePhylogeny {
     }
 
 
-
-
-
-    public void splitTreeVisual(String seqA1, String seqA2, String seqB1, String seqB2){
-
-
+    private String determineTreeStructure(List<Alignment> alignments) {
+        String rootFirst = alignments.get(0).getSequence1().getFullName();
+        if(rootFirst == null) System.out.println("im ok here");
+        String rootSecond = alignments.get(0).getSequence2().getFullName();
+        if(rootSecond == null) System.out.println("im ok here");
+        Alignment nextAlignment = alignments.get(1);
+        String nextFirstName = nextAlignment.getSequence1().getFullName();
+        String nextSecondName = nextAlignment.getSequence2().getFullName();
+        if (nextFirstName.equals(rootFirst) || nextFirstName.equals(rootSecond) || nextSecondName.equals(rootFirst) || nextSecondName.equals(rootSecond)) {
+            return "test";
+        } else {
+            return splitTreeVisual(rootFirst, rootSecond, nextFirstName, nextSecondName);
+        }
     }
 
+    private String splitTreeVisual(String seqA1, String seqA2, String seqB1, String seqB2){
+        StringBuilder visualBuild = new StringBuilder();
+        visualBuild.append("            ___" + seqA1 + '\n');
+        visualBuild.append("       ____|   " + '\n');
+        visualBuild.append("      |    |___" + seqA2 + '\n');
+        visualBuild.append(" _____|        " + '\n');
+        visualBuild.append("      |     ___" + seqB1 + '\n');
+        visualBuild.append("      |____|   " + '\n');
+        visualBuild.append("           |___" + seqB2 + '\n');
+        return visualBuild.toString();
+    }
+
+    private String telescopeTreeVisual(String seqA1, String seqA2, String seqB, String seqC){
+        StringBuilder visualBuild = new StringBuilder();
+        visualBuild.append("            ___" + seqA1 + '\n');
+        visualBuild.append("        ___|   " + '\n');
+        visualBuild.append(" ______|   |___" + seqA2 + '\n');
+        visualBuild.append("    |  |       " + '\n');
+        visualBuild.append("    |  |_______" + seqB + '\n');
+        visualBuild.append("    |          " + '\n');
+        visualBuild.append("    |__________" + seqC + '\n');
+        return visualBuild.toString();
+    }
+
+    public void outputPhylogenyResult(){
+        System.out.println(determineTreeStructure(sequenceAlignmentList()));
+    }
 
 }

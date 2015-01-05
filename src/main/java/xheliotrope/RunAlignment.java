@@ -1,6 +1,8 @@
 package xheliotrope;
 
 
+import xheliotrope.PhylogenyBuilder.FourSequencePhylogeny;
+
 import java.io.IOException;
 
 /**
@@ -14,10 +16,6 @@ public class RunAlignment {
     public static void main(String[] args) throws IOException {
         aFactory.sequenceAlignmentOutput();
     }
-
-
-
-
 
 
 }

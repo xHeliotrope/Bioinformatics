@@ -10,13 +10,14 @@ import java.util.*;
 
 public class AminoAcid extends Sequence {
 
-    public AminoAcid(String aaString, String name){
+    public AminoAcid(){}
+    public AminoAcid(String aaString, String latinName, String commonName){
         this.aaString = aaString;
-        this.name = name;
+        this.latinName = latinName;
+        this.commonName = commonName;
     }
 
-    private String name;
-    private String aaString;
+    private String aaString, latinName, commonName;
     private String[] stopCodon = {"tag", "taa", "tga"};
     private final Map<String, String> codonMap = new HashMap<String,String>(){
 
@@ -87,13 +88,15 @@ public class AminoAcid extends Sequence {
     public String getSequenceString(){
         return this.aaString;
     }
-    public String getName(){
-        return this.name;
+    public String getLatinName(){
+        return this.latinName;
     }
+    public String getCommonName() { return this.commonName; }
+    public String getFullName() { return latinName + " (" + commonName + ")";}
 
     public AminoAcid dnaToAmino(DNA dna){
         try {
-            DNA cutSequence = new DNA(cutUpStreamSequence(dna.getSequenceString()), dna.getName() + " (trimmed Strand)");
+            DNA cutSequence = new DNA(cutUpStreamSequence(dna.getSequenceString()), dna.getCommonName() + " (trimmed Strand)", "");
             return convertStrand(cutSequence);
         }
         catch(ImproperDNASequenceException e){
@@ -120,7 +123,7 @@ public class AminoAcid extends Sequence {
                 codon = dna.getSequenceString().substring(i, i + 3);
                 for (String terminator : stopCodon) {
                     if (codon.equals(terminator)) {
-                        return new AminoAcid(newAminoSequence, dna.getName() + "(from DNA)");
+                        return new AminoAcid(newAminoSequence, dna.getCommonName() + "(from DNA)", "");
                     }
                 }
                 newAminoSequence += codonMap.get(codon);
@@ -130,7 +133,7 @@ public class AminoAcid extends Sequence {
             System.out.println("Error in readable region of DNA");
         }
         System.out.println("Potential Error: never ran into a terminator codon during translation");
-        return new AminoAcid(newAminoSequence, "erroneous Amino Strand");
+        return new AminoAcid(newAminoSequence, "erroneous Amino Strand", "");
     }
 
 }

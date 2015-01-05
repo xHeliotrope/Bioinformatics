@@ -1,5 +1,6 @@
 package xheliotrope;
 
+import xheliotrope.PhylogenyBuilder.FourSequencePhylogeny;
 import xheliotrope.SequenceType.*;
 import java.io.*;
 
@@ -24,16 +25,17 @@ public class AlignmentFactory {
     }
 
     public void sequenceAlignmentOutput() throws IOException{
-        Sequence columbiaAA = new AminoAcid(sequenceDataRead("sequences/EstrogenSequences/columbiaLivia.dat"));
-        Sequence danioAA = new AminoAcid(sequenceDataRead("sequences/EstrogenSequences/danioRerio.dat"));
-        Sequence rutilusAA = new AminoAcid(sequenceDataRead("sequences/EstrogenSequences/rutilusRutilus.dat"));
-        Sequence torgoAA = new AminoAcid(sequenceDataRead("sequences/EstrogenSequences/torgoStracheliotus.dat"));
+        Sequence columbiaAA = new AminoAcid(sequenceDataRead("sequences/EstrogenSequences/columbiaLivia.dat"),
+                "Columbia Livia", "Rock Dove");
+        Sequence danioAA = new AminoAcid(sequenceDataRead("sequences/EstrogenSequences/danioRerio.dat"),
+                "Danio Rerio", "Zebra Fish");
+        Sequence rutilusAA = new AminoAcid(sequenceDataRead("sequences/EstrogenSequences/rutilusRutilus.dat"),
+                "Rutilus Rutilus", "Common Roach[Fish]");
+        Sequence torgoAA = new AminoAcid(sequenceDataRead("sequences/EstrogenSequences/torgoStracheliotus.dat"),
+                "Torgo Stracheliotus", "Lappet-Faced Vulture");
 
-        new AlignmentMatrix(columbiaAA, torgoAA).viewAlignmentBetweenSequences();
-        new AlignmentMatrix(rutilusAA, danioAA).viewAlignmentBetweenSequences();
-
-
-
+        FourSequencePhylogeny fourSeq = new FourSequencePhylogeny(columbiaAA, danioAA, rutilusAA, torgoAA);
+        fourSeq.outputPhylogenyResult();
     }
 
     public AminoAcid dnaConverter(DNA dna) {
