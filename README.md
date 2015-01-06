@@ -1,10 +1,12 @@
 Bioinformatics
 ==============
+A program to build genetic sequence-based phylogenies from small groups of organisms. Currently only scores and generates trees from four sequences, hoping to add variably sized scoring and tree building in the future.
 
 Can Translate DNA to Amino Acids.
 
-Still working on scoring and aligning multiple sequences. 
-Based on Needleman-Wunsch Algorithm.
+Still refining the scoring procedure, but currently using a rough implementation of the [Needleman-Wunsch Algorithm](http://en.wikipedia.org/wiki/Needleman-Wunsch_algorithm).
+
+All sequences were obtained from [NIH Databases](http://www.ncbi.nlm.nih.gov/protein)
 
 Sample Outputs:
 <pre><code>
