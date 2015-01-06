@@ -1,18 +1,18 @@
-package com.xheliotrope;
+/*package com.com.xheliotrope;
 import org.junit.Assert;
 import org.junit.Test;
-import xheliotrope.*;
-import xheliotrope.SequenceType.*;
+import com.xheliotrope.*;
+import com.xheliotrope.SequenceType.*;
 import java.io.IOException;
 
-/**
+*//**
  * rmoore8869
  * 12/16/2014
- */
+ *//*
 
 public class AlignmentTest{
 
-    AlignmentFactory aFactory = new AlignmentFactory();
+    AlignmentFactory aFactory;
 
     private boolean isValidNucleicAcid(String dna) {
         boolean valid = true;
@@ -62,7 +62,7 @@ public class AlignmentTest{
     }
 
     private void dnaInputChecker(String testLocation) throws IOException {
-        String sequenceString = aFactory.sequenceDataRead(testLocation);
+        String sequenceString = aFactory.sequenceDataConverter(testLocation);
         Assert.assertTrue(isValidNucleicAcid(sequenceString));
     }
 
@@ -75,8 +75,8 @@ public class AlignmentTest{
     public void dnaInputTest() throws IOException {
         Throwable caught = null;
         try {
-            dnaInputChecker("sequences/testSequences/notNullRegularNucleicSequence.dat");
-            aminoInputChecker("sequences/testSequences/notNullAminoAcidSequence.dat");
+            dnaInputChecker("Sequences/testSequences/notNullRegularNucleicSequence.dat");
+            aminoInputChecker("Sequences/testSequences/notNullAminoAcidSequence.dat");
         }
         catch(NullPointerException e){
             System.out.println("Tried to read empty file error.");
@@ -87,7 +87,7 @@ public class AlignmentTest{
 
     @Test
     public void dnaToAaTest() throws IOException {
-        DNA dna1 = new DNA(aFactory.sequenceDataRead("sequences/testSequences/notNullRegularNucleicSequence.dat"), "regular", "");
+        DNA dna1 = new DNA(aFactory.sequenceDataRead("Sequences/testSequences/notNullRegularNucleicSequence.dat"), "regular", "");
         AminoAcid fromDNA1 = aFactory.dnaConverter(dna1);
         System.out.println("Length of AA String: " + fromDNA1.getSequenceString().length() + '\n'
                 + "Length of DNA String: " + dna1.getSequenceString().length());
@@ -97,9 +97,9 @@ public class AlignmentTest{
     @Test(expected = ImproperDNASequenceException.class)
     public void dnaToAaWithImproperLengthTest() throws IOException{
         System.out.println("In Test with Errors 1: {");
-        DNA dna2 = new DNA(aFactory.sequenceDataRead("sequences/testSequences/withImproperLengthNucleicSequence.dat"), "badLength", "");
+        DNA dna2 = new DNA(aFactory.sequenceDataRead("Sequences/testSequences/withImproperLengthNucleicSequence.dat"), "badLength", "");
         AminoAcid fromDNA1 = aFactory.dnaConverter(dna2);
         System.out.println("}");
     }
 
-}
+}*/
