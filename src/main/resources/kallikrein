@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
+       http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+    <bean id="alignmentFactory" class="com.xheliotrope.AlignmentFactory">
+        <constructor-arg ref="justSnakes"/>
+    </bean>
+
+    <bean id="justSnakes" class="com.xheliotrope.PhylogenyBuilder.FourSequencePhylogeny">
+        <constructor-arg ref="sequenceList"/>
+    </bean>
+
+    <util:list id="sequenceList" value-type="com.xheliotrope.SequenceType.AminoAcid">
+        <ref bean="opheodrysAestivus"/>
+        <ref bean="pantherophisGuttatus"/>
+        <ref bean="pythonRegius"/>
+        <ref bean="echisColoratus"/>
+    </util:list>
+
+    <bean id="opheodrysAestivus" class="com.xheliotrope.SequenceType.AminoAcid">
+        <constructor-arg value="#{opheodrysConverter.sequenceDataConverter()};" type="java.lang.String"/>
+        <constructor-arg value="Opheodrys Aestivus (Green Grass Snake)" type="java.lang.String"/>
+    </bean>
+    <bean id="opheodrysConverter" class="com.xheliotrope.SequenceConverter">
+        <constructor-arg value="sequences/KallikreinSequences/opheodrysAestivus.dat" type="java.lang.String"/>
+    </bean>
+
+    <bean id="pantherophisGuttatus" class="com.xheliotrope.SequenceType.AminoAcid">
+        <constructor-arg value="#{pantherophisConverter.sequenceDataConverter()};" type="java.lang.String"/>
+        <constructor-arg value="Pantherophis Guttatus (Corn Snake)" type="java.lang.String"/>
+    </bean>
+    <bean id="pantherophisConverter" class="com.xheliotrope.SequenceConverter">
+        <constructor-arg value="sequences/KallikreinSequences/pantherophisGuttatus.dat" type="java.lang.String"/>
+    </bean>
+
+    <bean id="pythonRegius" class="com.xheliotrope.SequenceType.AminoAcid">
+        <constructor-arg value="#{pythonConverter.sequenceDataConverter()};" type="java.lang.String"/>
+        <constructor-arg value="Python Regius (Royal Python)" type="java.lang.String"/>
+    </bean>
+    <bean id="pythonConverter" class="com.xheliotrope.SequenceConverter">
+        <constructor-arg value="sequences/KallikreinSequences/pythonRegius.dat" type="java.lang.String"/>
+    </bean>
+
+    <bean id="echisColoratus" class="com.xheliotrope.SequenceType.AminoAcid">
+        <constructor-arg value="#{echisConverter.sequenceDataConverter()};" type="java.lang.String"/>
+        <constructor-arg value="Echis Coloratus (Painted Carpet Viper)" type="java.lang.String"/>
+    </bean>
+    <bean id="echisConverter" class="com.xheliotrope.SequenceConverter">
+        <constructor-arg value="sequences/KallikreinSequences/echisColoratus.dat" type="java.lang.String"/>
+    </bean>
+
+    </beans>
