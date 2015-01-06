@@ -34,4 +34,27 @@ Alignment Scores for the Phylogeny:
 1512 Columbia Livia (Rock Dove) and Danio Rerio (Zebra Fish)
 </code></pre>
 
+<pre><code>
+For Kallikrein Sequences:
+
+            ___Opheodrys Aestivus (Green Grass Snake)
+        ___|   
+ ______|   |___Pantherophis Guttatus (Corn Snake)
+    |  |       
+    |  |_______Echis Coloratus (Painted Carpet Viper)
+    |          
+    |__________Python Regius (Royal Python)
+
+
+
+Alignment Scores for the Phylogeny: 
+
+1936 Opheodrys Aestivus (Green Grass Snake) and Pantherophis Guttatus (Corn Snake)
+1780 Pantherophis Guttatus (Corn Snake) and Echis Coloratus (Painted Carpet Viper)
+1768 Opheodrys Aestivus (Green Grass Snake) and Echis Coloratus (Painted Carpet Viper)
+1600 Python Regius (Royal Python) and Echis Coloratus (Painted Carpet Viper)
+1528 Opheodrys Aestivus (Green Grass Snake) and Python Regius (Royal Python)
+1516 Pantherophis Guttatus (Corn Snake) and Python Regius (Royal Python)
+</code></pre>
+
 
