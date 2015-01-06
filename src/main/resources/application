@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
+       http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+    <bean id="alignmentFactory" class="com.xheliotrope.AlignmentFactory">
+        <constructor-arg ref="birdsAndFish"/>
+    </bean>
+
+    <bean id="birdsAndFish" class="com.xheliotrope.PhylogenyBuilder.FourSequencePhylogeny">
+        <constructor-arg ref="sequenceList"/>
+    </bean>
+
+    <util:list id="sequenceList" value-type="com.xheliotrope.SequenceType.AminoAcid">
+        <ref bean="columbiaLivia"/>
+        <ref bean="danioRerio"/>
+        <ref bean="rutilusRutilus"/>
+        <ref bean="torgoStracheliotus"/>
+    </util:list>
+
+    <bean id="columbiaLivia" class="com.xheliotrope.SequenceType.AminoAcid">
+        <constructor-arg value="#{columbiaConverter.sequenceDataConverter()};" type="java.lang.String"/>
+        <constructor-arg value="Columbia Livia (Rock Dove)" type="java.lang.String"/>
+    </bean>
+    <bean id="columbiaConverter" class="com.xheliotrope.SequenceConverter">
+        <constructor-arg value="sequences/EstrogenSequences/columbiaLivia.dat" type="java.lang.String"/>
+    </bean>
+
+    <bean id="danioRerio" class="com.xheliotrope.SequenceType.AminoAcid">
+        <constructor-arg value="#{danioConverter.sequenceDataConverter()};" type="java.lang.String"/>
+        <constructor-arg value="Danio Rerio (Zebra Fish)" type="java.lang.String"/>
+    </bean>
+    <bean id="danioConverter" class="com.xheliotrope.SequenceConverter">
+        <constructor-arg value="sequences/EstrogenSequences/danioRerio.dat" type="java.lang.String"/>
+    </bean>
+
+    <bean id="rutilusRutilus" class="com.xheliotrope.SequenceType.AminoAcid">
+        <constructor-arg value="#{rutilusConverter.sequenceDataConverter()};" type="java.lang.String"/>
+        <constructor-arg value="Rutilus Rutilus (Common Roach[Fish])" type="java.lang.String"/>
+    </bean>
+    <bean id="rutilusConverter" class="com.xheliotrope.SequenceConverter">
+        <constructor-arg value="sequences/EstrogenSequences/rutilusRutilus.dat" type="java.lang.String"/>
+    </bean>
+
+    <bean id="torgoStracheliotus" class="com.xheliotrope.SequenceType.AminoAcid">
+        <constructor-arg value="#{torgoConverter.sequenceDataConverter()};" type="java.lang.String"/>
+        <constructor-arg value="Torgo Stracheliotus (Lappet-Faced Vulture)" type="java.lang.String"/>
+    </bean>
+    <bean id="torgoConverter" class="com.xheliotrope.SequenceConverter">
+        <constructor-arg value="sequences/EstrogenSequences/torgoStracheliotus.dat" type="java.lang.String"/>
+    </bean>
+
+</beans>
